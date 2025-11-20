@@ -1,0 +1,68 @@
+{% extends "task/base.html" %}
+
+{% block title %}Detalles de tarea{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+        <div>
+            <h1 style="margin:0;">{{ task.title }}</h1>
+            <p style="margin:0; color:#6b7280;">Creada el {{ task.created_at|date:"d/m/Y H:i" }}</p>
+        </div>
+        <div class="actions">
+            <a class="button secondary" href="{% url 'task_update' task.pk %}">Editar</a>
+            <a class="button secondary" href="{% url 'task_list' %}">Volver</a>
+        </div>
+    </div>
+
+    <section style="margin-top:1.5rem;">
+        <h2>Descripción</h2>
+        <p>{% if task.description %}{{ task.description|linebreaks }}{% else %}No se registró descripción.{% endif %}</p>
+    </section>
+
+    <section style="margin-top:1.5rem;">
+        <h2>Información</h2>
+        <p>
+            <strong>Categoría:</strong>
+            <span class="badge" style="background-color: {{ task.category.color }}; color: white;">
+                {{ task.category.name }}
+            </span>
+        </p>
+        <p>
+            <strong>Fecha límite:</strong>
+            {% if task.due_date %}
+                {{ task.due_date|date:"d/m/Y" }}
+            {% else %}
+                No definida
+            {% endif %}
+        </p>
+        <p>
+            <strong>Etiquetas:</strong>
+            {% for tag in task.tags.all %}
+                <span class="badge">{{ tag.name }}</span>
+            {% empty %}
+                Sin etiquetas
+            {% endfor %}
+        </p>
+        <p>
+            <strong>Estado:</strong>
+            {% if task.completed %}
+                <span class="badge completed">Completada</span>
+            {% else %}
+                <span class="badge">Pendiente</span>
+            {% endif %}
+        </p>
+    </section>
+
+    {% if not task.completed %}
+        <section style="margin-top:2rem;">
+            <h2>Marcar como completada</h2>
+            <form method="post" action="{% url 'task_complete' task.pk %}">
+                {% csrf_token %}
+                <p>{{ complete_form.confirm }}</p>
+                <button class="button" type="submit">Marcar completada</button>
+            </form>
+        </section>
+    {% endif %}
+</div>
+{% endblock %}

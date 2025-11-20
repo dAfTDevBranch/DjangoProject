@@ -1,0 +1,39 @@
+{% extends "task/base.html" %}
+
+{% block title %}Feedback del servicio{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="margin-top:0;">Feedback de los usuarios</h1>
+
+    {% if feedbacks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Comentario</th>
+                    <th>Calificación</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fb in feedbacks %}
+                    <tr>
+                        <td>{{ fb.name }}</td>
+                        <td>{{ fb.comment }}</td>
+                        <td>{{ fb.rating }}/10</td>
+                        <td>{{ fb.created_at|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay feedback registrado aún.</p>
+    {% endif %}
+
+    <div style="margin-top:1.5rem;">
+        <a href="{% url 'feedback_create' %}" class="button">Dejar nuevo feedback</a>
+        <a href="{% url 'task_list' %}" class="button secondary">Volver a tareas</a>
+    </div>
+</div>
+{% endblock %}

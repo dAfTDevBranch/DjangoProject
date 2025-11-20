@@ -1,0 +1,26 @@
+{% extends "task/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="margin-top:0;">{{ title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div style="display:grid; gap:1rem; margin-bottom:1.5rem;">
+            {% for field in form %}
+                <div>
+                    <label style="display:block; font-weight:600; margin-bottom:0.35rem;">{{ field.label_tag }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                        <div style="color:#b91c1c; font-size:0.85rem;">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="actions">
+            <button class="button" type="submit">Enviar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
