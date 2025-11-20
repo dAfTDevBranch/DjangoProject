@@ -5,3 +5,4 @@ mongoengine==0.29.1
 pymongo==4.15.4
 sqlparse==0.5.3
 tzdata==2025.2
+gunicorn
